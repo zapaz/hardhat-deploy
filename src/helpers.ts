@@ -755,6 +755,7 @@ export function addHelpers(
           const newDeployment = {
             abi,
             address: diffResult.address,
+            args: argsArray,
             linkedData: options.linkedData,
             solcInputHash,
             solcInput,
