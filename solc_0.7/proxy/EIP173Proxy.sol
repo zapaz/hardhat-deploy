@@ -21,13 +21,13 @@ contract EIP173Proxy is Proxy {
         bytes memory data
     ) payable {
         _setImplementation(implementationAddress, data);
-        _setOwner(ownerAddress);
+        _setProxyAdmin(ownerAddress);
     }
 
     // ///////////////////// EXTERNAL ///////////////////////////////////////////////////////////////////////////
 
     function owner() external view returns (address) {
-        return _owner();
+        return _proxyAdmin();
     }
 
     function supportsInterface(bytes4 id) external view returns (bool) {
@@ -55,7 +55,7 @@ contract EIP173Proxy is Proxy {
     }
 
     function transferOwnership(address newOwner) external onlyOwner {
-        _setOwner(newOwner);
+        _setProxyAdmin(newOwner);
     }
 
     function upgradeTo(address newImplementation) external onlyOwner {
@@ -69,25 +69,15 @@ contract EIP173Proxy is Proxy {
     // /////////////////////// MODIFIERS ////////////////////////////////////////////////////////////////////////
 
     modifier onlyOwner() {
-        require(msg.sender == _owner(), "NOT_AUTHORIZED");
+        require(msg.sender == _proxyAdmin(), "NOT_ADMIN");
         _;
     }
 
     // ///////////////////////// INTERNAL //////////////////////////////////////////////////////////////////////
 
-    function _owner() internal view returns (address adminAddress) {
-        // solhint-disable-next-line security/no-inline-assembly
-        assembly {
-            adminAddress := sload(0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103)
-        }
-    }
-
-    function _setOwner(address newOwner) internal {
-        address previousOwner = _owner();
-        // solhint-disable-next-line security/no-inline-assembly
-        assembly {
-            sstore(0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103, newOwner)
-        }
-        emit OwnershipTransferred(previousOwner, newOwner);
+    function _setProxyAdmin(address newAdmin) internal override returns (address) {
+        address oldAdmin = super._setProxyAdmin(newAdmin);
+        emit OwnershipTransferred(oldAdmin, newAdmin);
+        return oldAdmin;
     }
 }

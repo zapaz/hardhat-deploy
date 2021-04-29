@@ -29,14 +29,14 @@ abstract contract Proxied {
     }
 
     modifier onlyProxyAdmin() {
-        require(msg.sender == _proxyAdmin(), "NOT_AUTHORIZED");
+        require(msg.sender == _proxyAdmin(), "NOT_PROXY_ADMIN");
         _;
     }
 
-    function _proxyAdmin() internal view returns (address ownerAddress) {
+    function _proxyAdmin() internal view returns (address adminAddress) {
         // solhint-disable-next-line security/no-inline-assembly
         assembly {
-            ownerAddress := sload(0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103)
+            adminAddress := sload(0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103)
         }
     }
 }
