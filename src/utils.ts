@@ -302,6 +302,10 @@ function transformNamedAccounts(
               address = new Wallet(protocolSplit[1]).address;
               addressesToProtocol[address.toLowerCase()] =
                 'privatekey://' + protocolSplit[1];
+            } else if (protocolSplit[0].toLowerCase() === 'safe') {
+              const split = protocolSplit[1].split(':');
+              address = split[1];
+              addressesToProtocol[address.toLowerCase()] = spec;
             } else {
               throw new Error(
                 `unsupported protocol ${protocolSplit[0]}:// for named accounts`

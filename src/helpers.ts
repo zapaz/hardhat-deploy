@@ -48,6 +48,7 @@ import ownershipFacet from '../extendedArtifacts/OwnershipFacet.json';
 import diamantaire from '../extendedArtifacts/Diamantaire.json';
 import {Artifact, EthereumProvider, Network} from 'hardhat/types';
 import {DeploymentsManager} from './DeploymentsManager';
+import {SafeProviderAdapter} from './safe/adapter';
 
 let LedgerSigner: any; // TODO type
 
@@ -1227,8 +1228,20 @@ Plus they are only used when the contract is meant to be used as standalone when
             hardwareWallet = 'ledger';
           } else if (registeredProtocol.startsWith('privatekey')) {
             ethersSigner = new Wallet(registeredProtocol.substr(13), provider);
-          } else if (registeredProtocol.startsWith('gnosis')) {
-            ethersSigner = new Wallet(registeredProtocol.substr(13), provider);
+          } else if (registeredProtocol.startsWith('safe')) {
+            const split = registeredProtocol.substr(7).split(':');
+            const signer = provider.getSigner(split[0]);
+            const safeAddress = split[1];
+            ethersSigner = new Web3Provider(
+              fixProvider(
+                new SafeProviderAdapter(
+                  network.provider,
+                  signer,
+                  safeAddress
+                  // serivceUrl // TODO
+                )
+              )
+            ).getSigner(); // this return the first account right now, need a special safe ethersSIgner
           }
         }
       }
