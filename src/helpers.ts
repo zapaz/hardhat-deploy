@@ -45,6 +45,7 @@ import OpenZeppelinTransparentProxy from '../extendedArtifacts/TransparentUpgrad
 import OptimizedTransparentUpgradeableProxy from '../extendedArtifacts/OptimizedTransparentUpgradeableProxy.json';
 import DefaultProxyAdmin from '../extendedArtifacts/ProxyAdmin.json';
 import eip173Proxy from '../extendedArtifacts/EIP173Proxy.json';
+import uupsProxy from '../extendedArtifacts/ERC1967Proxy.json';
 import eip173ProxyWithReceive from '../extendedArtifacts/EIP173ProxyWithReceive.json';
 import diamondBase from '../extendedArtifacts/Diamond.json';
 import diamondCutFacet from '../extendedArtifacts/DiamondCutFacet.json';
@@ -884,6 +885,7 @@ export function addHelpers(
     let upgradeIndex;
     let proxyContract: ExtendedArtifact = eip173Proxy;
     let checkABIConflict = true;
+    let proxyAdminHandledInImplementation = false;
     let viaAdminContract:
       | string
       | {name: string; artifact?: string | ArtifactData}
@@ -934,6 +936,9 @@ export function addHelpers(
           if (!proxyContract || proxyContract === eip173Proxy) {
             if (options.proxy.proxyContract === 'EIP173ProxyWithReceive') {
               proxyContract = eip173ProxyWithReceive;
+            } else if (options.proxy.proxyContract === 'UUPS') {
+              proxyContract = uupsProxy;
+              proxyAdminHandledInImplementation = true;
             } else if (options.proxy.proxyContract === 'EIP173Proxy') {
               proxyContract = eip173Proxy;
             } else if (
@@ -966,9 +971,38 @@ export function addHelpers(
     if (deployResult) {
       return deployResult;
     }
+
+    if (proxyAdminHandledInImplementation) {
+      if (typeof options.proxy === 'object') {
+        if (options.proxy.owner) {
+          throw new Error(
+            'UUPS proxies need to handle ownership via the implementation. You cannot set the owner/admin via the owner option. You ll have to pass it through an init function'
+          );
+        }
+        if (
+          !(
+            'methodName' in options.proxy ||
+            ('execute' in options.proxy &&
+              options.proxy.execute &&
+              'methodName' in options.proxy.execute) ||
+            ('execute' in options.proxy &&
+              options.proxy.execute &&
+              'init' in options.proxy.execute)
+          )
+        ) {
+          throw new Error(
+            'UUPS proxies need to have a method to be called on initialization. This should at least setup the owner/admin for next upgrade. Use the "execute" option'
+          );
+        }
+      } else {
+        throw new Error(
+          'UUPS proxies need a proxy object option to define the initialiation data, including the owner/admin that will be responsible for the next upgrade'
+        );
+      }
+    }
+
     const proxyName = name + '_Proxy';
     const {address: owner} = getProxyOwner(options);
-    const {address: from} = getFrom(options.from);
     const implementationArgs = options.args ? [...options.args] : [];
 
     // --- Implementation Deployment ---
@@ -1151,7 +1185,9 @@ Note that in this case, the contract deployment will not behave the same if depl
         const proxyOptions = {...options}; // ensure no change
         delete proxyOptions.proxy;
         proxyOptions.contract = proxyContract;
-        proxyOptions.args = [implementation.address, proxyAdmin, data];
+        proxyOptions.args = proxyAdminHandledInImplementation
+          ? [implementation.address, data]
+          : [implementation.address, proxyAdmin, data];
         proxy = await _deployOne(proxyName, proxyOptions, true);
         // console.log(`proxy deployed at ${proxy.address} for ${proxy.receipt.gasUsed}`);
       } else {

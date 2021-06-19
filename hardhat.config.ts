@@ -117,16 +117,38 @@ task(TASK_COMPILE).setAction(async (args, hre, runSuper) => {
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: '0.7.6',
-    settings: {
-      optimizer: {
-        enabled: true,
-        runs: 999999,
+    compilers: [
+      {
+        version: '0.6.12',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 999999,
+          },
+        },
       },
-    },
+      {
+        version: '0.7.6',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 999999,
+          },
+        },
+      },
+      {
+        version: '0.8.5',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 999999,
+          },
+        },
+      },
+    ],
   },
   paths: {
-    sources: 'solc_0.7',
+    sources: 'contracts',
   },
 };
 
