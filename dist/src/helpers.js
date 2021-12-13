@@ -104,7 +104,7 @@ function linkRawLibrary(bytecode, libraryName, libraryAddress) {
     }
     const pattern = new RegExp(`_+\\$${encodedLibraryName}\\$_+`, 'g');
     if (!pattern.exec(bytecode)) {
-        throw new Error(`Can't link '${libraryName}' (${encodedLibraryName}) in \n----\n ${bytecode}\n----\n`);
+        throw new Error(`Can't link '${libraryName}' ( ${encodedLibraryName} ) in \n----\n ${bytecode}\n----\n`);
     }
     return bytecode.replace(pattern, address);
 }
@@ -229,26 +229,26 @@ function addHelpers(deploymentManager, partialExtension, network, getArtifact, s
                 throw new errors_1.UnknownSignerError(Object.assign({ from }, txRequest));
             }
             if (options.log || hardwareWallet) {
-                print(`sending eth to create2 contract deployer address (${senderAddress})`);
+                print(`sending eth to create2 contract deployer address ( ${senderAddress} )`);
                 if (hardwareWallet) {
-                    print(` (please confirm on your ${hardwareWallet})`);
+                    print(` (please confirm on your ${hardwareWallet} )`);
                 }
             }
             let ethTx = await handleSpecificErrors(ethersSigner.sendTransaction(txRequest));
             if (options.log || hardwareWallet) {
-                log(` (tx: ${ethTx.hash})...`);
+                log(` (tx: ${ethTx.hash} )...`);
             }
             ethTx = await onPendingTx(ethTx);
             await ethTx.wait();
             if (options.log || hardwareWallet) {
-                print(`deploying create2 deployer contract (at ${create2DeployerAddress}) using deterministic deployment (https://github.com/Arachnid/deterministic-deployment-proxy)`);
+                print(`deploying create2 deployer contract (at ${create2DeployerAddress} ) using deterministic deployment (https://github.com/Arachnid/deterministic-deployment-proxy)`);
                 if (hardwareWallet) {
-                    print(` (please confirm on your ${hardwareWallet})`);
+                    print(` (please confirm on your ${hardwareWallet} )`);
                 }
             }
             const deployTx = await provider.sendTransaction(await deploymentManager.getDeterministicDeploymentFactoryDeploymentTx());
             if (options.log || hardwareWallet) {
-                log(` (tx: ${deployTx.hash})...`);
+                log(` (tx: ${deployTx.hash} )...`);
             }
             await deployTx.wait();
         }
@@ -321,12 +321,12 @@ function addHelpers(deploymentManager, partialExtension, network, getArtifact, s
         if (options.log || hardwareWallet) {
             print(`deploying "${name}"`);
             if (hardwareWallet) {
-                print(` (please confirm on your ${hardwareWallet})`);
+                print(` (please confirm on your ${hardwareWallet} )`);
             }
         }
         let tx = await handleSpecificErrors(ethersSigner.sendTransaction(unsignedTx));
         if (options.log || hardwareWallet) {
-            print(` (tx: ${tx.hash})...`);
+            print(` (tx: ${tx.hash} )...`);
         }
         if (options.autoMine) {
             try {
@@ -513,7 +513,7 @@ function addHelpers(deploymentManager, partialExtension, network, getArtifact, s
                     throw new Error(`cannot get the transaction for ${name}'s previous deployment, please check your node synced status.`);
                 }
                 else {
-                    console.error(`no transaction details found for ${name}'s previous deployment, if the deployment is t be discarded, please delete the file`);
+                    console.error(`no transaction details found for ${name}'s previous deployment, if the deployment is to be discarded, please delete the file`);
                     return { differences: false, address: deployment.address };
                 }
             }
@@ -559,7 +559,7 @@ function addHelpers(deploymentManager, partialExtension, network, getArtifact, s
                 result = Object.assign(Object.assign({}, newDeployment), { newlyDeployed: false });
             }
             if (options.log) {
-                log(`reusing "${name}" at ${result.address}`);
+                log(`reusing "${name}" at ${result.address} `);
             }
         }
         return result;
@@ -826,7 +826,7 @@ Note that in this case, the contract deployment will not behave the same if depl
                 throw new Error(`To change owner/admin, you need to call transferOwnership on ${proxyAdminName}`);
             }
             if (currentProxyAdminOwner === constants_1.AddressZero) {
-                throw new Error(`The Proxy Admin (${proxyAdminName}) belongs to no-one. The Proxy cannot be upgraded anymore`);
+                throw new Error(`The Proxy Admin ( ${proxyAdminName} ) belongs to no-one. The Proxy cannot be upgraded anymore`);
             }
         }
         const implementation = await _deployOne(implementationName, implementationOptions);
@@ -1267,7 +1267,7 @@ Note that in this case, the contract deployment will not behave the same if depl
                     }
                     const proxyAddress = diamondCreatedEvent.args.diamond;
                     if (options.log || hardwareWallet) {
-                        log(`Diamond deployed at ${proxyAddress} via Diamantaire (${diamantaireDeployment.address} (tx: ${createReceipt.transactionHash})) with ${createReceipt.gasUsed} gas`);
+                        log(`Diamond deployed at ${proxyAddress} via Diamantaire ( ${diamantaireDeployment.address} (tx: ${createReceipt.transactionHash} )) with ${createReceipt.gasUsed} gas`);
                     }
                     if (expectedAddress && expectedAddress !== proxyAddress) {
                         throw new Error(`unexpected address ${proxyAddress} VS ${expectedAddress}`);
@@ -1361,7 +1361,7 @@ Note that in this case, the contract deployment will not behave the same if depl
             throw new errors_1.UnknownSignerError(Object.assign({ from }, transactionData));
         }
         if (hardwareWallet) {
-            log(` please confirm on your ${hardwareWallet}`);
+            log(` please confirm on your ${hardwareWallet} `);
         }
         let pendingTx = await handleSpecificErrors(ethersSigner.sendTransaction(transactionData));
         pendingTx = await onPendingTx(pendingTx);
@@ -1480,15 +1480,15 @@ data: ${data}
             });
         }
         if (options.log || hardwareWallet) {
-            print(`executing ${name}.${methodName}`);
+            print(`executing ${name}.${methodName} `);
             if (hardwareWallet) {
-                print(` (please confirm on your ${hardwareWallet})`);
+                print(` (please confirm on your ${hardwareWallet} )`);
             }
         }
         tx = await handleSpecificErrors(ethersContract.functions[methodName](...ethersArgs));
         tx = await onPendingTx(tx);
         if (options.log || hardwareWallet) {
-            print(` (tx: ${tx.hash}) ...`);
+            print(` (tx: ${tx.hash} ) ...`);
         }
         if (options.autoMine) {
             try {
@@ -1684,7 +1684,7 @@ data: ${data}
                                 throw new Error('no signer for ' + tx.from);
                             }
                             if (hardwareWallet) {
-                                print(` (please confirm on your ${hardwareWallet})`);
+                                print(` (please confirm on your ${hardwareWallet} )`);
                             }
                             const txReq = await handleSpecificErrors(ethersSigner.sendTransaction({
                                 to: tx.to,
@@ -1723,7 +1723,7 @@ data: ${data}
                             throw new Error('no signer for ' + tx.from);
                         }
                         if (hardwareWallet) {
-                            print(` (please confirm on your ${hardwareWallet})`);
+                            print(` (please confirm on your ${hardwareWallet} )`);
                         }
                         const gasPriceSetup = await getGasPrice();
                         const maxFeePerGas = gasPriceSetup.maxFeePerGas;

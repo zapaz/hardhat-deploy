@@ -187,7 +187,7 @@ async function submitSources(hre, solcInputsPath, config) {
             }
         }
         if (contractABI && contractABI !== '') {
-            log(`already verified: ${name} (${address}), skipping.`);
+            log(`already verified: ${name} ( ${address} ), skipping.`);
             return;
         }
         if (!metadataString) {
@@ -276,7 +276,7 @@ async function submitSources(hre, solcInputsPath, config) {
             }
         }
         const solcInputString = JSON.stringify(solcInput);
-        logInfo(`verifying ${name} (${address}) ...`);
+        logInfo(`verifying ${name} ( ${address} ) ...`);
         let constructorArguements;
         if (deployment.args) {
             const constructor = deployment.abi.find((v) => v.type === 'constructor');

@@ -46,7 +46,7 @@ async function submitSourcesToSourcify(hre, config) {
             const checkResponse = await axios_1.default.get(`${url}checkByAddresses?addresses=${address.toLowerCase()}&chainIds=${chainId}`);
             const { data: checkData } = checkResponse;
             if (checkData[0].status === 'perfect') {
-                log(`already verified: ${name} (${address}), skipping.`);
+                log(`already verified: ${name} ( ${address} ), skipping.`);
                 return;
             }
         }
@@ -57,7 +57,7 @@ async function submitSourcesToSourcify(hre, config) {
             logError(`Contract ${name} was deployed without saving metadata. Cannot submit to sourcify, skipping.`);
             return;
         }
-        logInfo(`verifying ${name} (${address} on chain ${chainId}) ...`);
+        logInfo(`verifying ${name} ( ${address} on chain ${chainId} ) ...`);
         const formData = new form_data_1.default();
         formData.append('address', address);
         formData.append('chain', chainId);
