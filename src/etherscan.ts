@@ -202,7 +202,7 @@ export async function submitSources(
       }
     }
     if (contractABI && contractABI !== '') {
-      log(`already verified: ${name} (${address}), skipping.`);
+      log(`already verified: ${name} ( ${address} ), skipping.`);
       return;
     }
 
@@ -317,7 +317,7 @@ export async function submitSources(
     }
     const solcInputString = JSON.stringify(solcInput);
 
-    logInfo(`verifying ${name} (${address}) ...`);
+    logInfo(`verifying ${name} ( ${address} ) ...`);
 
     let constructorArguements: string | undefined;
     if (deployment.args) {

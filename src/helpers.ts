@@ -164,7 +164,7 @@ function linkRawLibrary(
   const pattern = new RegExp(`_+\\$${encodedLibraryName}\\$_+`, 'g');
   if (!pattern.exec(bytecode)) {
     throw new Error(
-      `Can't link '${libraryName}' (${encodedLibraryName}) in \n----\n ${bytecode}\n----\n`
+      `Can't link '${libraryName}' ( ${encodedLibraryName} ) in \n----\n ${bytecode}\n----\n`
     );
   }
   return bytecode.replace(pattern, address);
@@ -430,10 +430,10 @@ export function addHelpers(
 
       if (options.log || hardwareWallet) {
         print(
-          `sending eth to create2 contract deployer address (${senderAddress})`
+          `sending eth to create2 contract deployer address ( ${senderAddress} )`
         );
         if (hardwareWallet) {
-          print(` (please confirm on your ${hardwareWallet})`);
+          print(` (please confirm on your ${hardwareWallet} )`);
         }
       }
 
@@ -441,24 +441,24 @@ export function addHelpers(
         ethersSigner.sendTransaction(txRequest)
       );
       if (options.log || hardwareWallet) {
-        log(` (tx: ${ethTx.hash})...`);
+        log(` (tx: ${ethTx.hash} )...`);
       }
       ethTx = await onPendingTx(ethTx);
       await ethTx.wait();
 
       if (options.log || hardwareWallet) {
         print(
-          `deploying create2 deployer contract (at ${create2DeployerAddress}) using deterministic deployment (https://github.com/Arachnid/deterministic-deployment-proxy)`
+          `deploying create2 deployer contract (at ${create2DeployerAddress} ) using deterministic deployment (https://github.com/Arachnid/deterministic-deployment-proxy)`
         );
         if (hardwareWallet) {
-          print(` (please confirm on your ${hardwareWallet})`);
+          print(` (please confirm on your ${hardwareWallet} )`);
         }
       }
       const deployTx = await provider.sendTransaction(
         await deploymentManager.getDeterministicDeploymentFactoryDeploymentTx()
       );
       if (options.log || hardwareWallet) {
-        log(` (tx: ${deployTx.hash})...`);
+        log(` (tx: ${deployTx.hash} )...`);
       }
       await deployTx.wait();
     }
@@ -580,7 +580,7 @@ export function addHelpers(
     if (options.log || hardwareWallet) {
       print(`deploying "${name}"`);
       if (hardwareWallet) {
-        print(` (please confirm on your ${hardwareWallet})`);
+        print(` (please confirm on your ${hardwareWallet} )`);
       }
     }
     let tx = await handleSpecificErrors(
@@ -588,7 +588,7 @@ export function addHelpers(
     );
 
     if (options.log || hardwareWallet) {
-      print(` (tx: ${tx.hash})...`);
+      print(` (tx: ${tx.hash} )...`);
     }
 
     if (options.autoMine) {
@@ -887,7 +887,7 @@ export function addHelpers(
           );
         } else {
           console.error(
-            `no transaction details found for ${name}'s previous deployment, if the deployment is t be discarded, please delete the file`
+            `no transaction details found for ${name}'s previous deployment, if the deployment is to be discarded, please delete the file`
           );
           return {differences: false, address: deployment.address};
         }
@@ -966,7 +966,7 @@ export function addHelpers(
         };
       }
       if (options.log) {
-        log(`reusing "${name}" at ${result.address}`);
+        log(`reusing "${name}" at ${result.address} `);
       }
     }
 
@@ -1345,7 +1345,7 @@ Note that in this case, the contract deployment will not behave the same if depl
       }
       if (currentProxyAdminOwner === AddressZero) {
         throw new Error(
-          `The Proxy Admin (${proxyAdminName}) belongs to no-one. The Proxy cannot be upgraded anymore`
+          `The Proxy Admin ( ${proxyAdminName} ) belongs to no-one. The Proxy cannot be upgraded anymore`
         );
       }
     }
@@ -1942,7 +1942,7 @@ Note that in this case, the contract deployment will not behave the same if depl
           const proxyAddress = diamondCreatedEvent.args.diamond;
           if (options.log || hardwareWallet) {
             log(
-              `Diamond deployed at ${proxyAddress} via Diamantaire (${diamantaireDeployment.address} (tx: ${createReceipt.transactionHash})) with ${createReceipt.gasUsed} gas`
+              `Diamond deployed at ${proxyAddress} via Diamantaire ( ${diamantaireDeployment.address} (tx: ${createReceipt.transactionHash} )) with ${createReceipt.gasUsed} gas`
             );
           }
 
@@ -2106,7 +2106,7 @@ Note that in this case, the contract deployment will not behave the same if depl
     }
 
     if (hardwareWallet) {
-      log(` please confirm on your ${hardwareWallet}`);
+      log(` please confirm on your ${hardwareWallet} `);
     }
     let pendingTx = await handleSpecificErrors(
       ethersSigner.sendTransaction(transactionData)
@@ -2269,9 +2269,9 @@ data: ${data}
     }
 
     if (options.log || hardwareWallet) {
-      print(`executing ${name}.${methodName}`);
+      print(`executing ${name}.${methodName} `);
       if (hardwareWallet) {
-        print(` (please confirm on your ${hardwareWallet})`);
+        print(` (please confirm on your ${hardwareWallet} )`);
       }
     }
 
@@ -2282,7 +2282,7 @@ data: ${data}
     tx = await onPendingTx(tx);
 
     if (options.log || hardwareWallet) {
-      print(` (tx: ${tx.hash}) ...`);
+      print(` (tx: ${tx.hash} ) ...`);
     }
 
     if (options.autoMine) {
@@ -2539,7 +2539,7 @@ data: ${data}
               }
 
               if (hardwareWallet) {
-                print(` (please confirm on your ${hardwareWallet})`);
+                print(` (please confirm on your ${hardwareWallet} )`);
               }
 
               const txReq = await handleSpecificErrors(
@@ -2585,7 +2585,7 @@ data: ${data}
             }
 
             if (hardwareWallet) {
-              print(` (please confirm on your ${hardwareWallet})`);
+              print(` (please confirm on your ${hardwareWallet} )`);
             }
 
             const gasPriceSetup = await getGasPrice();
