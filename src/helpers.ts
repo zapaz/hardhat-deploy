@@ -520,6 +520,7 @@ export function addHelpers(
     );
 
     const overrides: PayableOverrides = {
+      type: options.type,
       gasLimit: options.gasLimit,
       gasPrice: options.gasPrice,
       maxFeePerGas: options.maxFeePerGas,
