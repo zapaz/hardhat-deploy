@@ -58,7 +58,7 @@ export async function submitSourcesToSourcify(
       );
       const {data: checkData} = checkResponse;
       if (checkData[0].status === 'perfect') {
-        log(`already verified: ${name} (${address}), skipping.`);
+        log(`already verified: ${name} ( ${address} ), skipping.`);
         return;
       }
     } catch (e) {
@@ -74,7 +74,7 @@ export async function submitSourcesToSourcify(
       return;
     }
 
-    logInfo(`verifying ${name} (${address} on chain ${chainId}) ...`);
+    logInfo(`verifying ${name} ( ${address} on chain ${chainId} ) ...`);
 
     const formData = new FormData();
     formData.append('address', address);
