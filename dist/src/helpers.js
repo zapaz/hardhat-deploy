@@ -284,6 +284,7 @@ function addHelpers(deploymentManager, partialExtension, network, getArtifact, s
         const { address: from, ethersSigner, hardwareWallet, unknown, } = getFrom(options.from);
         const { artifact: linkedArtifact, artifactName } = await getLinkedArtifact(name, options);
         const overrides = {
+            type: options.type,
             gasLimit: options.gasLimit,
             gasPrice: options.gasPrice,
             maxFeePerGas: options.maxFeePerGas,

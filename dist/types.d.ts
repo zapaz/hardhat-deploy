@@ -123,6 +123,7 @@ export interface Create2DeployOptions extends DeployOptionsBase {
 }
 export interface CallOptions {
     from?: string;
+    type?: number;
     gasLimit?: string | number | BigNumber;
     gasPrice?: string | BigNumber;
     maxFeePerGas?: string | BigNumber;
